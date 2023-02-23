@@ -9,8 +9,8 @@ namespace Core.Repositories
 {
     public interface IPersonRepository
     {
-        Person GetPerson(Guid id);
-        List<Person> GetAllPeople();
+        Task<Person> GetPersonAsync(Guid id);
+        Task<List<Person>> GetAllPeopleAsync();
         void AddPerson(Person person);
         void UpdatePerson(Person person);
         void DeletePerson(Guid id);
