@@ -2,6 +2,7 @@
 using Core.Repositories;
 using DataAccessFile.Data;
 using DataAccessFile.Repositories;
+using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Text.Json;
 
@@ -12,93 +13,42 @@ public class Startup
     {
         private static async Task Main(string[] args)
         {
-            await Task.Run(() =>
-            {
-                new Startup().RunApp();
-            });
+            new Startup().RunApp();
         }
 
     }
 
-    public void RunApp()
+    public async void RunApp()
     {
         Debug();
         //MyOutput();
     }
 
-    public void Debug()
+    public void DebugPrintAllPeople(IPersonRepository personRepo, string inputText)
     {
-        DataContext dataContext = new DataContext("data.json");
-        IPersonRepository personRepo = new PersonFileRepository(dataContext);
-
         var people = personRepo.GetAllPeopleAsync().Result;
 
-        Console.WriteLine($"\n-- should be empty open --");
+        Console.WriteLine($"\n-- {inputText} start --");
         people
             .ForEach(person => {
                 Console.WriteLine($"{person.Id} {person.Firstname} {person.Lastname}");
             });
-        Console.WriteLine($"-- should be empty end --\n"); ;
+        Console.WriteLine($"--  {inputText} end --\n"); ;
+    }
 
-
-        //DELETE
-        people
-            .ForEach(person => {
-                personRepo.DeletePerson(person.Id);
-            });
-
+    public void DebugClearFile(DataContext dataContext)
+    {
+        //CLEAR
+        dataContext.Clear();
         dataContext.SaveChangesAsync().Wait();
+    }
 
-        /*
-        Parallel.ForEachAsync(people, async (person, token) =>
-        {
-            await personRepo.DeletePersonAsync(person.Id);
-        });
-        */
-
-        //SHOW DELETE
-        Console.WriteLine($"\n-- should be empty open --");
-        people
-            .ForEach(person => {
-
-                Console.WriteLine($"{person.Firstname} {person.Lastname}");
-            });
-        Console.WriteLine($"-- should be empty end --\n");
-
-
+    public void DebugAdd(IPersonRepository personRepo, DataContext dataContext)
+    {
         //ADD
         personRepo.AddPerson(new Person()
         {
             Id = Guid.NewGuid(),
-            Firstname = "John",
-            Lastname = "Doe",
-            SocialSkills = new List<string> { "social", "fun", "coach" },
-            SocialAccounts = new Dictionary<string, string>
-            {
-                {  "Twitter", "@JohnDoe" },
-                {  "Linkedin", "Linkedin.com/johndoe" }
-            }
-        });
-
-        dataContext.SaveChangesAsync().Wait();
-
-
-        //SHOW ADD
-        people = personRepo.GetAllPeopleAsync().Result;
-
-        Console.WriteLine($"\n-- should be empty open --");
-        people
-            .ForEach(person => {
-
-                Console.WriteLine($"{person.Firstname} {person.Lastname}");
-            });
-        Console.WriteLine($"-- should be empty end --\n");
-
-
-        //UPDATE
-        personRepo.UpdatePerson(new Person()
-        {
-            Id = personRepo.GetAllPeopleAsync().Result.First().Id,
             Firstname = "John",
             Lastname = "Boris",
             SocialSkills = new List<string> { "social", "fun", "coach" },
@@ -109,17 +59,31 @@ public class Startup
             }
         });
 
+        dataContext.SaveChangesAsync().Wait();
+    }
 
-        //SHOW UPDATE
-        people = personRepo.GetAllPeopleAsync().Result;
+    public void DebugUpdate(IPersonRepository personRepo, DataContext dataContext)
+    {
+        //UPDATE
+        personRepo.GetAllPeopleAsync().Result.First().Firstname = "Update";
+        dataContext.SaveChangesAsync().Wait();
+    }
+    public void Debug()
+    {
+        //SETUP
+        DataContext dataContext = new DataContext("data.json");
+        IPersonRepository personRepo = new PersonFileRepository(dataContext);
 
-        Console.WriteLine($"\n-- should be empty open --");
-        people
-            .ForEach(person => {
+        DebugPrintAllPeople(personRepo, "LOAD FILE");
 
-                Console.WriteLine($"{person.Firstname} {person.Lastname}");
-            });
-        Console.WriteLine($"-- should be empty end --\n");
+        /*DebugClearFile(dataContext);
+        DebugPrintAllPeople(personRepo, "CLEARED FILE");*/
+
+        DebugAdd(personRepo, dataContext);
+        DebugPrintAllPeople(personRepo, "ADDED FILE");
+
+        DebugUpdate(personRepo, dataContext);
+        DebugPrintAllPeople(personRepo, "UPDATED FILE");
 
 
         Console.WriteLine($"-------------------------");
@@ -158,3 +122,36 @@ public class Startup
     }
     public string FormatDtoToJson(object inputDto) => JsonSerializer.Serialize(inputDto, new JsonSerializerOptions { WriteIndented = true });
 }
+
+
+
+/* 
+         * 
+         * people
+            .ForEach(person => {
+                personRepo.DeletePerson(person);
+            });
+
+         * */
+
+/*
+Parallel.ForEachAsync(people, async (person, token) =>
+{
+    await personRepo.DeletePersonAsync(person.Id);
+});
+*/
+
+/*
+personRepo.UpdatePerson(new Person()
+{
+    Id = personRepo.GetAllPeopleAsync().Result.First().Id,
+    Firstname = "John",
+    Lastname = "Boris",
+    SocialSkills = new List<string> { "social", "fun", "coach" },
+    SocialAccounts = new Dictionary<string, string>
+    {
+        {  "Twitter", "@JohnDoe" },
+        {  "Linkedin", "Linkedin.com/johndoe" }
+    }
+});
+*/
