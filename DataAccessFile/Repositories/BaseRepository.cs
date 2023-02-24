@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,40 +7,39 @@ using System.Threading.Tasks;
 
 namespace DataAccessFile.Repositories
 {
-    public class BaseRepository<T>
+    public class BaseRepository<T> where T : IEntity
     {
-        protected Dictionary<string, T> data = new Dictionary<string, T>();
+        protected List<T> data = new List<T>();
 
-        public virtual void Add(string key, T item)
+        public virtual void Add(T item)
         {
-            data.Add(key, item);
+            data.Add(item);
         }
 
-        public virtual void Delete(string key)
+        public virtual void Delete(T item)
         {
-            var removed = data.Remove(key);
+            var removed = data.Remove(item);
 
             if(removed == false)
             {
-                Console.WriteLine(key);
+                Console.WriteLine(item);
                 throw new Exception("Data not found");
-                data.Count();
             }
         }
 
-        public virtual void Update(string key, T item)
+        public virtual void Update(T item)
         {
-            data[key] = item;
+            data[data.IndexOf(item)] = item;
         }
 
-        public virtual T Get(string index)
+        public virtual T Get(Guid id)
         {
-            return data[index];
+            return data.FirstOrDefault(entry => entry.Id == id);
         }
 
         public virtual List<T> GetAll()
         {
-            return data.Values.ToList();
+            return data;
         }
     }
 }

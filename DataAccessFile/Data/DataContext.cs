@@ -18,15 +18,20 @@ namespace DataAccessFile.Data
             LoadFileData().Wait();
         }
 
-        public Dictionary<string, Person> People { get; set; } = new Dictionary<string, Person>();
+        public List<Person> People { get; set; } = new List<Person>();
 
         private async Task LoadFileData()
         {
             if (File.Exists(_filePath))
             {
                 using FileStream stream = new(_filePath, FileMode.Open);
-                People = await JsonSerializer.DeserializeAsync<Dictionary<string, Person>>(stream);
+                People = await JsonSerializer.DeserializeAsync<List<Person>>(stream);
             }
+        }
+
+        public void Clear()
+        {
+            People.Clear();
         }
         
         public async Task<bool> SaveChangesAsync()

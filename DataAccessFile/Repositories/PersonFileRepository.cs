@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessFile.Repositories
 {
-    public class PersonFileRepository : BaseFileRepository<Person>, IPersonRepository
+    public class PersonFileRepository : BaseRepository<Person>, IPersonRepository
     {
         DataContext _context;
 
@@ -30,7 +30,7 @@ namespace DataAccessFile.Repositories
                 throw new ArgumentNullException(nameof(id));
             }
 
-            return await Task.FromResult(base.Get(id.ToString()));
+            return await Task.FromResult(base.Get(id));
         }
 
         public async Task<List<Person>> GetAllPeopleAsync()
@@ -45,21 +45,21 @@ namespace DataAccessFile.Repositories
                 throw new ArgumentNullException(nameof(person));
             }
 
-            base.Add(person.Id.ToString(), person);
+            base.Add(person);
             SynchronizeContext();
             //await SaveFileDataAsync();
         }
 
-        public void DeletePerson(Guid id)
+        public void DeletePerson(Person person)
         {
-            Delete(id.ToString());
+            Delete(person);
             SynchronizeContext();
             //await SaveFileDataAsync();
         }
 
         public void UpdatePerson(Person person)
         {
-            base.Update(person.Id.ToString(), person);
+            //base.Update(person);
             SynchronizeContext();
             //await SaveFileDataAsync();
         }

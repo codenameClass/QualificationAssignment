@@ -13,6 +13,6 @@ namespace Core.Repositories
         Task<List<Person>> GetAllPeopleAsync();
         void AddPerson(Person person);
         void UpdatePerson(Person person);
-        void DeletePerson(Guid id);
+        void DeletePerson(Person person);
     }
 }
