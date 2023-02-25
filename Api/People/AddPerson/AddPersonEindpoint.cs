@@ -13,24 +13,36 @@ namespace Api.People.AddPerson
     {
         public static IEndpointRouteBuilder MapAddPerson(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/people", async (HttpContext context, [FromBody] AddPersonRequest request) =>
+            app.MapPost("/people", async (AddPersonRequest request, HttpResponse response) =>
             {
                 DataContext dataContext = new DataContext("data.json");
                 IPersonRepository personRepo = new PersonFileRepository(dataContext);
 
-                // Deserialize the request body into a Person object
-                var options = new JsonSerializerOptions();
-                options.Converters.Add(new GuidConverter());
-                Person newPerson = await JsonSerializer.DeserializeAsync<Person>(context.Request.Body, options);
-                //newPerson.Id = Guid.NewGuid();
+                Person newPerson = new Person()
+                {
+                    Id = Guid.NewGuid(),
+                    Firstname = request.Firstname,
+                    Lastname = request.Lastname,
+                    SocialSkills = request.SocialSkills,
+                    SocialAccounts = request.SocialAccounts
+                };
 
-                // Add the new person to the repository
+                // Save the new person to the database
                 personRepo.AddPerson(newPerson);
                 await dataContext.SaveChangesAsync();
 
-                // Return a 201 Created response with the new person's ID in the Location header
-                context.Response.Headers.Add("Location", $"/people/{newPerson.Id}");
-                context.Response.StatusCode = StatusCodes.Status201Created;
+                response.Headers.Add("Location", $"/people/{newPerson.Id}");
+                response.StatusCode = StatusCodes.Status201Created;
+
+                AddPersonResponse newPersonResponse = new AddPersonResponse(
+                    newPerson.Id,
+                    newPerson.Firstname,
+                    newPerson.Lastname,
+                    newPerson.SocialSkills,
+                    newPerson.SocialAccounts
+                );
+
+                return newPersonResponse;
             })
             .WithName("AddPerson");
 

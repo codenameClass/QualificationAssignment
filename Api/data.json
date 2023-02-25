@@ -1,0 +1,28 @@
+[
+  {
+    "Id": "5d3e351a-3ff7-4a6d-acd5-ca2055b3e4a3",
+    "Firstname": "string",
+    "Lastname": "string",
+    "SocialSkills": [
+      "string"
+    ],
+    "SocialAccounts": {
+      "additionalProp1": "string",
+      "additionalProp2": "string",
+      "additionalProp3": "string"
+    }
+  },
+  {
+    "Id": "3b1c383e-28a3-4aac-8386-fc8ef0d8948e",
+    "Firstname": "string",
+    "Lastname": "string",
+    "SocialSkills": [
+      "string"
+    ],
+    "SocialAccounts": {
+      "additionalProp1": "string",
+      "additionalProp2": "string",
+      "additionalProp3": "string"
+    }
+  }
+]

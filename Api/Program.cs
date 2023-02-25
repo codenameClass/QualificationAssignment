@@ -33,14 +33,14 @@ app.UseHttpsRedirection();
 //GET::/people
 app.MapGetAllPeople();
 
-//ADD::/people
-app.MapUpdatePerson();
+//POST::/people
+app.MapAddPerson();
 
 //GET::/people/{id}
 app.MapGetPersonById();
 
 //PUT::/people/{id}
-app.MapAddPerson();
+app.MapUpdatePerson();
 
 //DELETE::/people/{id}
 app.MapDeletePerson();

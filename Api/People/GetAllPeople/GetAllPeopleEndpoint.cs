@@ -14,7 +14,18 @@ namespace Api.People.GetAllPeople
                 DataContext dataContext = new DataContext("data.json");
                 IPersonRepository personRepo = new PersonFileRepository(dataContext);
 
-                return await personRepo.GetAllPeopleAsync();
+                var people = await personRepo.GetAllPeopleAsync();
+
+                return people.Select(p => 
+                    new GetAllPersonResponse
+                    (
+                        p.Id,
+                        p.Firstname,
+                        p.Lastname,
+                        p.SocialSkills,
+                        p.SocialAccounts
+                    )
+                );
             })
             .WithName("GetAllPeople");
 

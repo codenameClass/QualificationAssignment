@@ -2,7 +2,6 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Http;
     using Core.Model;
     using Core.Repositories;
@@ -27,7 +26,16 @@
                         return Results.NotFound();
                     }
 
-                    return Results.Ok(person);
+                    GetPersonByIdResponse getPersonResponse = new GetPersonByIdResponse
+                    (
+                        person.Id,
+                        person.Firstname,
+                        person.Lastname,
+                        person.SocialSkills,
+                        person.SocialAccounts
+                    );
+
+                    return Results.Ok(getPersonResponse);
                 })
                 .WithName("GetPersonById");
 
