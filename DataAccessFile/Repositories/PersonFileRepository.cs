@@ -18,11 +18,6 @@ namespace DataAccessFile.Repositories
             data = _context.People;
         }
 
-        private void SynchronizeContext()
-        {
-            _context.People = data;
-        } 
-
         public async Task<Person> GetPersonAsync(Guid id)
         {
             if (id == Guid.Empty)
@@ -46,22 +41,25 @@ namespace DataAccessFile.Repositories
             }
 
             base.Add(person);
-            SynchronizeContext();
-            //await SaveFileDataAsync();
         }
 
         public void DeletePerson(Person person)
         {
+            if (person == null)
+            {
+                throw new ArgumentNullException(nameof(person));
+            }
+
             Delete(person);
-            SynchronizeContext();
-            //await SaveFileDataAsync();
         }
 
+        [Obsolete("The UpdatePerson method is unnessary since reference is not scoped, it should not be used.")]
         public void UpdatePerson(Person person)
         {
-            //base.Update(person);
-            SynchronizeContext();
-            //await SaveFileDataAsync();
+            if (person == null)
+            {
+                throw new ArgumentNullException(nameof(person));
+            }
         }
 
     }
