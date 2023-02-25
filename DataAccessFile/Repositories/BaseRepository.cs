@@ -22,7 +22,6 @@ namespace DataAccessFile.Repositories
 
             if(removed == false)
             {
-                Console.WriteLine(item);
                 throw new Exception("Data not found");
             }
         }
