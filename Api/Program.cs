@@ -2,6 +2,7 @@ using Api.People.AddPerson;
 using Api.People.DeletePerson;
 using Api.People.GetAllPeople;
 using Api.People.GetPersonById.Api.People.GetPersonById;
+using Api.People.ResultPerson;
 using Api.People.UpdatePerson;
 using Core.Model;
 using Core.Repositories;
@@ -44,6 +45,9 @@ app.MapUpdatePerson();
 
 //DELETE::/people/{id}
 app.MapDeletePerson();
+
+//GET::/people/{id}/result
+app.MapResultPersonById();
 
 
 app.Run();
