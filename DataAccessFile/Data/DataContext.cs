@@ -46,19 +46,6 @@ namespace DataAccessFile.Data
             return true;
         }
         
-
-        /*
-        public async Task<bool> SaveChangesAsync()
-        {
-            string json = JsonSerializer.Serialize(People, new JsonSerializerOptions { WriteIndented = true });
-
-            using FileStream stream = new FileStream(_filePath, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 4096, useAsync: true);
-            await stream.WriteAsync(Encoding.UTF8.GetBytes(json), 0, json.Length);
-            await stream.FlushAsync();
-
-            return true;
-        }
-        */
     }
 
 }
