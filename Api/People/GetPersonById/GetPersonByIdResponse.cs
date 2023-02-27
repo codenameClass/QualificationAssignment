@@ -1,4 +1,6 @@
-﻿namespace Api.People.GetPersonById
+﻿using Api.People.GetAllPeople;
+
+namespace Api.People.GetPersonById
 {
     public record GetPersonByIdResponse
     (
@@ -6,6 +8,6 @@
         string Firstname,
         string Lastname,
         List<string> SocialSkills,
-        Dictionary<string, string> SocialAccounts
+        List<GetPersonByIdSocialAccountResponse> SocialAccounts
     );
 }

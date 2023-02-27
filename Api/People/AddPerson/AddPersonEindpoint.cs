@@ -24,7 +24,14 @@ namespace Api.People.AddPerson
                     Firstname = request.Firstname,
                     Lastname = request.Lastname,
                     SocialSkills = request.SocialSkills,
-                    SocialAccounts = request.SocialAccounts
+                    SocialAccounts = request.SocialAccounts.Select(socialAccountRequest =>
+                    {
+                        return new SocialAccount()
+                        { 
+                            Type = socialAccountRequest.Type,
+                            Address = socialAccountRequest.Address
+                        };
+                    }).ToList()
                 };
 
                 // Save the new person to the database
@@ -39,7 +46,13 @@ namespace Api.People.AddPerson
                     newPerson.Firstname,
                     newPerson.Lastname,
                     newPerson.SocialSkills,
-                    newPerson.SocialAccounts
+                    newPerson.SocialAccounts.Select(socialAccount => {
+                        return new AddPersonSocialAccountResponse
+                        (
+                            socialAccount.Type,
+                            socialAccount.Address
+                        );
+                    }).ToList()
                 );
 
                 return newPersonResponse;

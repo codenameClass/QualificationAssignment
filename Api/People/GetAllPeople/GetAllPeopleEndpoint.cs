@@ -23,7 +23,10 @@ namespace Api.People.GetAllPeople
                         p.Firstname,
                         p.Lastname,
                         p.SocialSkills,
-                        p.SocialAccounts
+                        p.SocialAccounts.Select(socialAccount =>
+                        {
+                            return new GetAllPersonSocialAccountResponse(socialAccount.Type, socialAccount.Address);
+                        }).ToList()
                     )
                 );
             })

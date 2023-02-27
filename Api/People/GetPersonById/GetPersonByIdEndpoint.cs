@@ -32,7 +32,9 @@
                         person.Firstname,
                         person.Lastname,
                         person.SocialSkills,
-                        person.SocialAccounts
+                        person.SocialAccounts.Select(socialAccount => {
+                            return new GetPersonByIdSocialAccountResponse(socialAccount.Type, socialAccount.Address);
+                        }).ToList()
                     );
 
                     return Results.Ok(getPersonResponse);

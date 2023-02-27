@@ -24,13 +24,21 @@ namespace Api.People.ResultPerson
                 }
 
                 var fullName = $"{person.Firstname} {person.Lastname}";
+
+
+                List<ResultPersonSocialAccountResponse> resultSocialAccountResponse = person.SocialAccounts.Select(socialAccount =>
+                {
+                    return new ResultPersonSocialAccountResponse(socialAccount.Type, socialAccount.Address);
+
+                }).ToList();
+
                 ResultPersonResponse resultPersonResponse = new ResultPersonResponse
                 (
                     person.Id,
                     person.Firstname,
                     person.Lastname,
                     person.SocialSkills,
-                    person.SocialAccounts
+                    resultSocialAccountResponse
                 );
 
                 ResultProcessedPersonByIdResponse resultPersonByIdResponse = new ResultProcessedPersonByIdResponse

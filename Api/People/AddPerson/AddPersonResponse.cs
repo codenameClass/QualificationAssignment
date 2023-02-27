@@ -6,6 +6,6 @@
         string Firstname,
         string Lastname,
         List<string> SocialSkills,
-        Dictionary<string, string> SocialAccounts
+        List<AddPersonSocialAccountResponse> SocialAccounts
     );
 }

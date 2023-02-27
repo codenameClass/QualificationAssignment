@@ -12,6 +12,6 @@ namespace Core.Model
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public List<string> SocialSkills { get; set; }
-        public Dictionary<string, string> SocialAccounts { get; set; }
+        public List<SocialAccount> SocialAccounts { get; set; }
     }
 }

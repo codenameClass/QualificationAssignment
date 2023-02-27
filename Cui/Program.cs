@@ -52,10 +52,10 @@ public class Startup
             Firstname = "John",
             Lastname = "Boris",
             SocialSkills = new List<string> { "social", "fun", "coach" },
-            SocialAccounts = new Dictionary<string, string>
+            SocialAccounts = new List<SocialAccount>
             {
-                {  "Twitter", "@JohnDoe" },
-                {  "Linkedin", "Linkedin.com/johndoe" }
+                new SocialAccount {  Type = "Twitter", Address = "@JohnDoe" },
+                new SocialAccount {  Type = "Linkedin", Address = "Linkedin.com/johndoe" }
             }
         });
 
@@ -74,16 +74,16 @@ public class Startup
         DataContext dataContext = new DataContext("data.json");
         IPersonRepository personRepo = new PersonFileRepository(dataContext);
 
-        DebugPrintAllPeople(personRepo, "LOAD FILE");
+        //DebugPrintAllPeople(personRepo, "LOAD FILE");
 
-        /*DebugClearFile(dataContext);
-        DebugPrintAllPeople(personRepo, "CLEARED FILE");*/
+        DebugClearFile(dataContext);
+        DebugPrintAllPeople(personRepo, "CLEARED FILE");
 
-        DebugAdd(personRepo, dataContext);
-        DebugPrintAllPeople(personRepo, "ADDED FILE");
+        //DebugAdd(personRepo, dataContext);
+        //DebugPrintAllPeople(personRepo, "ADDED FILE");
 
-        DebugUpdate(personRepo, dataContext);
-        DebugPrintAllPeople(personRepo, "UPDATED FILE");
+        //DebugUpdate(personRepo, dataContext);
+        //DebugPrintAllPeople(personRepo, "UPDATED FILE");
 
 
         Console.WriteLine($"-------------------------");

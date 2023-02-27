@@ -29,7 +29,13 @@ namespace Api.People.UpdatePerson
                 existingPerson.Firstname = request.Firstname;
                 existingPerson.Lastname = request.Lastname;
                 existingPerson.SocialSkills = request.SocialSkills;
-                existingPerson.SocialAccounts = request.SocialAccounts;
+                existingPerson.SocialAccounts = request.SocialAccounts.Select(socialAccountRequest => {
+                    return new SocialAccount()
+                    { 
+                        Type= socialAccountRequest.Type,
+                        Address= socialAccountRequest.Address
+                    };
+                }).ToList();
 
                 // Save the changes to the repository
                 await dataContext.SaveChangesAsync();
