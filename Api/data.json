@@ -1,28 +1,46 @@
 [
   {
-    "Id": "5d3e351a-3ff7-4a6d-acd5-ca2055b3e4a3",
-    "Firstname": "string",
-    "Lastname": "string",
+    "Id": "fafd36e1-ec0b-4627-a78f-90331f65e5ba",
+    "Firstname": "Three",
+    "Lastname": "Win",
     "SocialSkills": [
       "string"
     ],
-    "SocialAccounts": {
-      "additionalProp1": "string",
-      "additionalProp2": "string",
-      "additionalProp3": "string"
-    }
+    "SocialAccounts": [
+      {
+        "Type": "string",
+        "Address": "string"
+      }
+    ]
   },
   {
-    "Id": "3b1c383e-28a3-4aac-8386-fc8ef0d8948e",
-    "Firstname": "string",
-    "Lastname": "string",
+    "Id": "d5a18118-faac-4aba-a6d2-4dab73b9a200",
+    "Firstname": "Eva Karen",
+    "Lastname": "Ingels",
     "SocialSkills": [
-      "string"
+      "",
+      "social"
     ],
-    "SocialAccounts": {
-      "additionalProp1": "string",
-      "additionalProp2": "string",
-      "additionalProp3": "string"
-    }
+    "SocialAccounts": [
+      {
+        "Type": "Facebook",
+        "Address": "dfd"
+      }
+    ]
+  },
+  {
+    "Id": "39059249-e52f-47c4-b25f-234307a43765",
+    "Firstname": "Eva Karen",
+    "Lastname": "Ingels",
+    "SocialSkills": [
+      "",
+      "social"
+    ],
+    "SocialAccounts": [
+      {
+        "Type": "Facebook",
+        "Address": "dfd"
+      }
+    ]
   }
 ]
