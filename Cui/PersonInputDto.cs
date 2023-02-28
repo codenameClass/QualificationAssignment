@@ -1,7 +1,10 @@
-﻿public class PersonInputDto
-{
-    public string Firstname { get; init; }
-    public string Lastname { get; init; }
-    public List<string> SocialSkills { get; init; }
-    public Dictionary<string, string> SocialAccounts { get; init; }
-}
+﻿using Cui;
+using System.ComponentModel.DataAnnotations;
+
+public record PersonInputDto
+(
+    [Required] string FirstName,
+    [Required] string LastName,
+    List<string> SocialSkills,
+    List<SocialAccountInputDto> SocialAccounts
+);

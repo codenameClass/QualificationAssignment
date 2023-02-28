@@ -1,9 +1,11 @@
 ﻿using Core.Model;
 using Core.Repositories;
+using Cui;
 using DataAccessFile.Data;
 using DataAccessFile.Repositories;
 using Microsoft.VisualBasic.FileIO;
 using System;
+using System.Net.Sockets;
 using System.Text.Json;
 
 
@@ -20,8 +22,8 @@ public class Startup
 
     public async void RunApp()
     {
-        Debug();
-        //MyOutput();
+        //Debug();
+        MyOutput();
     }
 
     public void DebugPrintAllPeople(IPersonRepository personRepo, string inputText)
@@ -91,20 +93,19 @@ public class Startup
 
     public void MyOutput()
     {
-        PersonInputDto personInputDto = new PersonInputDto()
-        {
-            Firstname = "Jens",
-            Lastname = "Ingels",
-            SocialSkills = new List<string> { "social", "fun", "coach" },
-            SocialAccounts = new Dictionary<string, string>
+        PersonInputDto personInputDto = new PersonInputDto
+        (
+            "John",
+            "Doe",
+            new List<string> { "social", "fun", "coach" },
+            new List<SocialAccountInputDto>
             {
-                {  "Twitter", "@JohnDoe" },
-                {  "Linkedin", "Linkedin.com/johndoe" }
+                new ("Twitter", "@JohnDoe"),
+                new ("Linkedin", "Linkedin.com/johndoe")
             }
+        );
 
-        };
-
-        var fullName = $"{personInputDto.Firstname} {personInputDto.Lastname}";
+        var fullName = $"{personInputDto.FirstName} {personInputDto.LastName}";
 
         Console.WriteLine($"The number of VOWELS: {NumberOfVowelsInString(fullName)}");
         Console.WriteLine($"The number of CONSTENANTS: {NumberOfConstenantsInString(fullName)}");
@@ -122,36 +123,3 @@ public class Startup
     }
     public string FormatDtoToJson(object inputDto) => JsonSerializer.Serialize(inputDto, new JsonSerializerOptions { WriteIndented = true });
 }
-
-
-
-/* 
-         * 
-         * people
-            .ForEach(person => {
-                personRepo.DeletePerson(person);
-            });
-
-         * */
-
-/*
-Parallel.ForEachAsync(people, async (person, token) =>
-{
-    await personRepo.DeletePersonAsync(person.Id);
-});
-*/
-
-/*
-personRepo.UpdatePerson(new Person()
-{
-    Id = personRepo.GetAllPeopleAsync().Result.First().Id,
-    Firstname = "John",
-    Lastname = "Boris",
-    SocialSkills = new List<string> { "social", "fun", "coach" },
-    SocialAccounts = new Dictionary<string, string>
-    {
-        {  "Twitter", "@JohnDoe" },
-        {  "Linkedin", "Linkedin.com/johndoe" }
-    }
-});
-*/
