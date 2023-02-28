@@ -34,7 +34,6 @@ namespace Api.People.ResultPerson
 
                 ResultPersonResponse resultPersonResponse = new ResultPersonResponse
                 (
-                    person.Id,
                     person.Firstname,
                     person.Lastname,
                     person.SocialSkills,
