@@ -24,6 +24,13 @@ public class Startup
     {
         //Debug();
         MyOutput();
+        //Reset();
+    }
+
+    public void Reset()
+    {
+        DataContext dataContext = new DataContext("data.json");
+        DebugClearFile(dataContext);
     }
 
     public void DebugPrintAllPeople(IPersonRepository personRepo, string inputText)
