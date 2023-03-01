@@ -37,7 +37,7 @@ The use of FluentValidation in this API ensures that the incoming data is well-f
 The CUI layer is built using C# and provides a command-line interface to interact with the data layer. The following methods are used:
 
 * `Debug()` - used during development.
-* `Reset()` - clears the file.
+* `Reset()` - clears the file (from that layer).
 * `MyOutput()` - performs some basic string manipulation and outputs the results as part of the original requirements.
 
 Here is a screenshot of the CUI in action:
