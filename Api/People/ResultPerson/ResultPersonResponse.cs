@@ -2,8 +2,8 @@
 {
     public record ResultPersonResponse
     (
-        string Firstname,
-        string Lastname,
+        string FirstName,
+        string LastName,
         List<string> SocialSkills,
         List<ResultPersonSocialAccountResponse> SocialAccounts
     );

@@ -33,7 +33,7 @@ public class Startup
         Console.WriteLine($"\n-- {inputText} start --");
         people
             .ForEach(person => {
-                Console.WriteLine($"{person.Id} {person.Firstname} {person.Lastname}");
+                Console.WriteLine($"{person.Id} {person.FirstName} {person.LastName}");
             });
         Console.WriteLine($"--  {inputText} end --\n"); ;
     }
@@ -48,18 +48,18 @@ public class Startup
     public void DebugAdd(IPersonRepository personRepo, DataContext dataContext)
     {
         //ADD
-        personRepo.AddPerson(new Person()
-        {
-            Id = Guid.NewGuid(),
-            Firstname = "John",
-            Lastname = "Boris",
-            SocialSkills = new List<string> { "social", "fun", "coach" },
-            SocialAccounts = new List<SocialAccount>
+        personRepo.AddPerson(Person.CreateNew
+        (
+            Guid.NewGuid(),
+            "John",
+            "Boris",
+            new List<string> { "social", "fun", "coach" },
+            new List<SocialAccount>
             {
-                new SocialAccount {  Type = "Twitter", Address = "@JohnDoe" },
-                new SocialAccount {  Type = "Linkedin", Address = "Linkedin.com/johndoe" }
+                SocialAccount.CreateNew("Twitter", "@JohnDoe"),
+                SocialAccount.CreateNew("Linkedin", "Linkedin.com/johndoe")
             }
-        });
+        ));
 
         dataContext.SaveChangesAsync().Wait();
     }
@@ -67,7 +67,7 @@ public class Startup
     public void DebugUpdate(IPersonRepository personRepo, DataContext dataContext)
     {
         //UPDATE
-        personRepo.GetAllPeopleAsync().Result.First().Firstname = "Update";
+        personRepo.GetAllPeopleAsync().Result.First().FirstName = "Update";
         dataContext.SaveChangesAsync().Wait();
     }
     public void Debug()

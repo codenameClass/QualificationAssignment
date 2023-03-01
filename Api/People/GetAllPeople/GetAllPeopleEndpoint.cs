@@ -20,8 +20,8 @@ namespace Api.People.GetAllPeople
                     new GetAllPersonResponse
                     (
                         p.Id,
-                        p.Firstname,
-                        p.Lastname,
+                        p.FirstName,
+                        p.LastName,
                         p.SocialSkills,
                         p.SocialAccounts.Select(socialAccount =>
                         {

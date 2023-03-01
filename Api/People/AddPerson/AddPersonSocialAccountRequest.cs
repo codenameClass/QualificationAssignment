@@ -1,4 +1,6 @@
-﻿namespace Api.People.AddPerson
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Api.People.AddPerson
 {
     public record AddPersonSocialAccountRequest
     (

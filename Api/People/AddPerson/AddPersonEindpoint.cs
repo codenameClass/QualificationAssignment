@@ -15,36 +15,44 @@ namespace Api.People.AddPerson
         {
             app.MapPost("/people", async (AddPersonRequest request, HttpResponse response) =>
             {
+                // Validate the request
+                var validator = new AddPersonRequestValidator();
+                var validationResult = validator.Validate(request);
+                if (!validationResult.IsValid)
+                {
+                    response.StatusCode = StatusCodes.Status400BadRequest;
+                    response.ContentType = "application/json";
+                    await response.WriteAsync(JsonSerializer.Serialize(validationResult.Errors));
+                    return;
+                }
+
                 DataContext dataContext = new DataContext("data.json");
                 IPersonRepository personRepo = new PersonFileRepository(dataContext);
 
-                Person newPerson = new Person()
-                {
-                    Id = Guid.NewGuid(),
-                    Firstname = request.Firstname,
-                    Lastname = request.Lastname,
-                    SocialSkills = request.SocialSkills,
-                    SocialAccounts = request.SocialAccounts.Select(socialAccountRequest =>
+                Person newPerson = Person.CreateNew
+                (
+                    Guid.NewGuid(),
+                    request.FirstName,
+                    request.LastName,
+                    request.SocialSkills,
+                    request.SocialAccounts.Select(socialAccountRequest =>
                     {
-                        return new SocialAccount()
-                        { 
-                            Type = socialAccountRequest.Type,
-                            Address = socialAccountRequest.Address
-                        };
+                        return SocialAccount.CreateNew
+                        (
+                            socialAccountRequest.Type,
+                            socialAccountRequest.Address
+                        );
                     }).ToList()
-                };
+                );
 
                 // Save the new person to the database
                 personRepo.AddPerson(newPerson);
                 await dataContext.SaveChangesAsync();
 
-                response.Headers.Add("Location", $"/people/{newPerson.Id}");
-                response.StatusCode = StatusCodes.Status201Created;
-
                 AddPersonResponse newPersonResponse = new AddPersonResponse(
                     newPerson.Id,
-                    newPerson.Firstname,
-                    newPerson.Lastname,
+                    newPerson.FirstName,
+                    newPerson.LastName,
                     newPerson.SocialSkills,
                     newPerson.SocialAccounts.Select(socialAccount => {
                         return new AddPersonSocialAccountResponse
@@ -55,7 +63,11 @@ namespace Api.People.AddPerson
                     }).ToList()
                 );
 
-                return newPersonResponse;
+                response.Headers.Add("Location", $"/people/{newPerson.Id}");
+                response.StatusCode = StatusCodes.Status201Created;
+                response.ContentType = "application/json";
+                await JsonSerializer.SerializeAsync(response.Body, newPersonResponse);
+
             })
             .WithName("AddPerson");
 

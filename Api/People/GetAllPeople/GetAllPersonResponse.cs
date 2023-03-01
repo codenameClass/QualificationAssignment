@@ -3,8 +3,8 @@
     public record GetAllPersonResponse
     (
         Guid id,
-        string Firstname,
-        string Lastname,
+        string FirstName,
+        string LastName,
         List<string> SocialSkills,
         List<GetAllPersonSocialAccountResponse> SocialAccounts
     );

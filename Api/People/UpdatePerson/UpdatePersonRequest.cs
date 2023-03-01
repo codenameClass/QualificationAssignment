@@ -2,9 +2,9 @@
 {
     public record UpdatePersonRequest
     (
-        Guid id,
-        string Firstname,
-        string Lastname,
+        Guid Id,
+        string FirstName,
+        string LastName,
         List<string> SocialSkills,
         List<UpdatePersonSocialAccountRequest> SocialAccounts
     );

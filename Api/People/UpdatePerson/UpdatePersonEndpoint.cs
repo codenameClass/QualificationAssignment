@@ -3,6 +3,7 @@ using Core.Model;
 using Core.Repositories;
 using DataAccessFile.Data;
 using DataAccessFile.Repositories;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -12,8 +13,19 @@ namespace Api.People.UpdatePerson
     {
         public static IEndpointRouteBuilder MapUpdatePerson(this IEndpointRouteBuilder app)
         {
-            app.MapPut("/people/{id}", async (HttpContext context, Guid id, [FromBody] UpdatePersonRequest request) =>
+            app.MapPut("/people/{id}", async (Guid id, UpdatePersonRequest request, HttpResponse response) =>
             {
+                // Validate the request
+                var validator = new UpdatePersonRequestValidator();
+                var validationResult = validator.Validate(request);
+                if (!validationResult.IsValid)
+                {
+                    response.StatusCode = StatusCodes.Status400BadRequest;
+                    response.ContentType = "application/json";
+                    await response.WriteAsync(JsonSerializer.Serialize(validationResult.Errors));
+                    return;
+                }
+
                 DataContext dataContext = new DataContext("data.json");
                 IPersonRepository personRepo = new PersonFileRepository(dataContext);
 
@@ -21,26 +33,26 @@ namespace Api.People.UpdatePerson
                 Person existingPerson = await personRepo.GetPersonAsync(id);
                 if (existingPerson == null)
                 {
-                    context.Response.StatusCode = StatusCodes.Status404NotFound;
+                    response.StatusCode = StatusCodes.Status404NotFound;
                     return;
                 }
 
                 // Update the person's properties with the values from the request
-                existingPerson.Firstname = request.Firstname;
-                existingPerson.Lastname = request.Lastname;
+                existingPerson.FirstName = request.FirstName;
+                existingPerson.LastName = request.LastName;
                 existingPerson.SocialSkills = request.SocialSkills;
                 existingPerson.SocialAccounts = request.SocialAccounts.Select(socialAccountRequest => {
-                    return new SocialAccount()
-                    { 
-                        Type= socialAccountRequest.Type,
-                        Address= socialAccountRequest.Address
-                    };
+                    return SocialAccount.CreateNew
+                    ( 
+                        socialAccountRequest.Type,
+                        socialAccountRequest.Address
+                    );
                 }).ToList();
 
                 // Save the changes to the repository
                 await dataContext.SaveChangesAsync();
 
-                context.Response.StatusCode = StatusCodes.Status204NoContent;
+                response.StatusCode = StatusCodes.Status204NoContent;
             })
             .WithName("UpdatePerson");
 

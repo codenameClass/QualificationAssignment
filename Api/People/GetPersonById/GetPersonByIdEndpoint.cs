@@ -29,8 +29,8 @@
                     GetPersonByIdResponse getPersonResponse = new GetPersonByIdResponse
                     (
                         person.Id,
-                        person.Firstname,
-                        person.Lastname,
+                        person.FirstName,
+                        person.LastName,
                         person.SocialSkills,
                         person.SocialAccounts.Select(socialAccount => {
                             return new GetPersonByIdSocialAccountResponse(socialAccount.Type, socialAccount.Address);

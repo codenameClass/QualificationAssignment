@@ -23,7 +23,7 @@ namespace Api.People.ResultPerson
                     return Results.NotFound();
                 }
 
-                var fullName = $"{person.Firstname} {person.Lastname}";
+                var fullName = $"{person.FirstName} {person.LastName}";
 
 
                 List<ResultPersonSocialAccountResponse> resultSocialAccountResponse = person.SocialAccounts.Select(socialAccount =>
@@ -34,8 +34,8 @@ namespace Api.People.ResultPerson
 
                 ResultPersonResponse resultPersonResponse = new ResultPersonResponse
                 (
-                    person.Firstname,
-                    person.Lastname,
+                    person.FirstName,
+                    person.LastName,
                     person.SocialSkills,
                     resultSocialAccountResponse
                 );

@@ -5,8 +5,8 @@ namespace Api.People.GetPersonById
     public record GetPersonByIdResponse
     (
         Guid id,
-        string Firstname,
-        string Lastname,
+        string FirstName,
+        string LastName,
         List<string> SocialSkills,
         List<GetPersonByIdSocialAccountResponse> SocialAccounts
     );
